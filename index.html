@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>888便捷查询IP</title>
+<meta name="description" content="888便捷查询IP，提供IP查询、批量IP查询、DNS查询、网站状态和SSL证书查询。">
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;background:#f5f7fb;color:#172033}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.wrap{width:min(1160px,calc(100% - 32px));margin:auto}
+header{height:68px;background:#fff;border-bottom:1px solid #e7ebf2;position:sticky;top:0;z-index:20}
+.nav{height:100%;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:24px;font-weight:850;letter-spacing:-.5px}.logo span{color:#2563eb}
+.links{display:flex;gap:25px}.links a{color:#344054;text-decoration:none;font-weight:650;font-size:14px}.links a:hover{color:#2563eb}
+.hero{text-align:center;padding:68px 0 38px}
+.badge{display:inline-block;padding:8px 14px;border-radius:999px;background:#eaf1ff;color:#2563eb;font-size:13px;font-weight:750}
+h1{font-size:48px;line-height:1.15;margin:18px 0 12px;letter-spacing:-1.8px}
+.hero p{margin:0 auto;color:#697386;font-size:17px;line-height:1.7;max-width:720px}
+.search{display:flex;gap:10px;max-width:820px;margin:30px auto 0;background:#fff;padding:9px;border:1px solid #e5eaf2;border-radius:18px;box-shadow:0 12px 40px rgba(28,42,70,.08)}
+.search input{flex:1;min-width:0;border:0;outline:0;padding:14px;font-size:17px}
+.primary{border:0;border-radius:13px;background:#2563eb;color:#fff;padding:0 25px;font-weight:750}.primary:hover{background:#1d4ed8}
+.quick{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:15px}
+.quick button,.secondary{border:1px solid #e2e8f0;border-radius:12px;background:#fff;color:#475467;padding:10px 15px;font-weight:650}.quick button:hover,.secondary:hover{border-color:#bfd0ef;color:#2563eb}
+.result,.batch,.toolbox{display:none;background:#fff;border:1px solid #e5eaf2;border-radius:18px;margin-top:28px;padding:26px;text-align:left;box-shadow:0 10px 35px rgba(28,42,70,.06)}
+.result.show,.batch.show,.toolbox.show{display:block}
+.title{font-size:24px;font-weight:800;margin-bottom:18px}
+.grid-result{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.item{background:#f8faff;border:1px solid #edf1f7;border-radius:14px;padding:16px;min-width:0}
+.item small{display:block;color:#7b8494;margin-bottom:7px;font-size:13px}.item strong{font-size:16px;word-break:break-word}
+.note{margin-top:15px;padding:13px 15px;background:#fff8e8;border:1px solid #f2dfb0;border-radius:12px;color:#765a1a;font-size:13px;line-height:1.65}
+.ok{color:#14804a}.bad{color:#c62828}
+.section{padding:30px 0 70px}
+.head{display:flex;justify-content:space-between;align-items:end;margin-bottom:18px}.head h2{margin:0;font-size:26px}.head span{color:#8a93a3;font-size:13px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.card{background:#fff;border:1px solid #e5eaf2;border-radius:17px;padding:21px;transition:.2s;cursor:pointer}.card:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(28,42,70,.08)}
+.ico{width:44px;height:44px;display:grid;place-items:center;border-radius:12px;background:#edf3ff;color:#2563eb;font-size:12px;font-weight:850;margin-bottom:15px}
+.card h3{margin:0 0 7px;font-size:17px}.card p{margin:0;color:#6b7485;font-size:13px;line-height:1.6}
+textarea{width:100%;min-height:150px;border:1px solid #dfe5ee;border-radius:13px;padding:14px;resize:vertical;outline:0}.actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}.count{color:#7b8494;font-size:13px;margin-top:10px}
+.table-wrap{overflow:auto;margin-top:15px}.table{width:100%;border-collapse:collapse;min-width:760px}.table th,.table td{padding:12px;border-bottom:1px solid #edf0f5;text-align:left;font-size:13px}.table th{background:#f8faff;color:#667085}
+.toolbox input{width:100%;border:1px solid #dfe5ee;border-radius:12px;padding:13px;outline:0}.toolbox .row{display:flex;gap:10px;margin-top:12px}.toolbox .row button{white-space:nowrap}
+footer{text-align:center;padding:25px;color:#8992a3;font-size:13px}
+@media(max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}.grid-result{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.wrap{width:min(100% - 20px,1160px)}.links{display:none}.hero{padding:45px 0 25px}h1{font-size:35px}.hero p{font-size:15px}.search{padding:7px}.search input{font-size:15px}.primary{padding:0 17px}.cards{grid-template-columns:1fr 1fr;gap:10px}.card{padding:16px}.card h3{font-size:15px}.grid-result{grid-template-columns:1fr}.result,.batch,.toolbox{padding:18px}}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap nav">
+<div class="logo">888<span>便捷查询IP</span></div>
+<div class="links">
+<a href="#tools">工具</a><a href="#ip">IP查询</a><a href="#batch">批量查询</a><a href="#dns">DNS</a>
+</div>
+</div>
+</header>
+
+<main>
+<section class="hero" id="ip">
+<div class="wrap">
+<div class="badge">免费网络检测工具</div>
+<h1>888钱包为您服务</h1>
+<p>快速查询 IP、批量检测 IP、检测 DNS、网站状态、SSL 证书及常用网络信息。</p>
+
+<div class="search">
+<input id="ipInput" placeholder="输入 IPv4 / IPv6，例如 8.8.8.8" autocomplete="off">
+<button class="primary" onclick="lookup()">查询 IP</button>
+</div>
+<div class="quick">
+<button onclick="myip()">查看我的 IP</button>
+<button onclick="setip('8.8.8.8')">示例 8.8.8.8</button>
+<button onclick="setip('1.1.1.1')">示例 1.1.1.1</button>
+<button onclick="showBatch()">批量查询 IP</button>
+</div>
+<div id="result" class="result"></div>
+</div>
+</section>
+
+<section class="section" id="tools">
+<div class="wrap">
+<div class="head"><h2>常用工具</h2><span>V4 · IP / 批量 / DNS / 网站 / SSL</span></div>
+<div class="cards">
+<div class="card" onclick="focusip()"><div class="ico">IP</div><h3>IP 地址查询</h3><p>查询 IPv4 / IPv6、国家、地区、城市、ISP、ASN 和时区。</p></div>
+<div class="card" onclick="showBatch()"><div class="ico">BATCH</div><h3>批量 IP 查询</h3><p>一次输入多个 IP，集中查看归属信息，最多支持 50 个。</p></div>
+<div class="card" onclick="showDNS()"><div class="ico">DNS</div><h3>DNS 查询</h3><p>查询 A、AAAA、MX、CNAME、TXT 等常见 DNS 记录。</p></div>
+<div class="card" onclick="showHTTP()"><div class="ico">HTTP</div><h3>网站状态</h3><p>输入网站地址，检查是否可以正常访问。</p></div>
+<div class="card" onclick="showSSL()"><div class="ico">SSL</div><h3>SSL 证书</h3><p>查询 HTTPS 网站的公开证书信息。</p></div>
+<div class="card" onclick="showDNS()"><div class="ico">DNS</div><h3>DNS 记录</h3><p>快速查看域名当前公开解析记录。</p></div>
+<div class="card" onclick="focusip()"><div class="ico">ASN</div><h3>ASN 查询</h3><p>通过 IP 查看网络组织及 ASN 信息。</p></div>
+<div class="card" onclick="myip()"><div class="ico">MY IP</div><h3>我的 IP</h3><p>自动查询当前网络出口 IP。</p></div>
+</div>
+</div>
+</section>
+
+<section class="section" id="batch">
+<div class="wrap">
+<div id="batchBox" class="batch">
+<div class="title">批量 IP 查询</div>
+<textarea id="batchInput" placeholder="每行输入一个 IP，也支持逗号、空格分隔&#10;例如：8.8.8.8&#10;1.1.1.1&#10;223.104.195.112"></textarea>
+<div class="actions"><button class="primary" onclick="batchLookup()">开始批量查询</button><button class="secondary" onclick="clearBatch()">清空</button></div>
+<div class="count" id="batchCount">最多支持 50 个 IP</div>
+<div id="batchResult"></div>
+</div>
+</div>
+</section>
+
+<section class="section" id="dns">
+<div class="wrap">
+<div id="dnsBox" class="toolbox">
+<div class="title">DNS 查询</div>
+<input id="domainInput" placeholder="输入域名，例如 google.com">
+<div class="actions"><button class="primary" onclick="dnsLookup()">查询 DNS</button></div>
+<div id="dnsResult"></div>
+</div>
+
+<div id="httpBox" class="toolbox">
+<div class="title">网站状态检测</div>
+<input id="urlInput" placeholder="输入网站，例如 https://example.com">
+<div class="actions"><button class="primary" onclick="httpLookup()">检测网站</button></div>
+<div id="httpResult"></div>
+</div>
+
+<div id="sslBox" class="toolbox">
+<div class="title">SSL 证书查询</div>
+<input id="sslInput" placeholder="输入域名，例如 google.com">
+<div class="actions"><button class="primary" onclick="sslLookup()">查询 SSL</button></div>
+<div id="sslResult"></div>
+</div>
+</div>
+</section>
+</main>
+
+<footer>888便捷查询IP · IP / DNS / 网站检测工具</footer>
+
+<script>
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const countryMap={
+US:'美国',CN:'中国',JP:'日本',KR:'韩国',SG:'新加坡',HK:'中国香港',TW:'中国台湾',
+MO:'中国澳门',BR:'巴西',MX:'墨西哥',PH:'菲律宾',TH:'泰国',VN:'越南',MY:'马来西亚',
+ID:'印度尼西亚',IN:'印度',GB:'英国',DE:'德国',FR:'法国',ES:'西班牙',IT:'意大利',
+NL:'荷兰',RU:'俄罗斯',UA:'乌克兰',TR:'土耳其',AE:'阿联酋',UZ:'乌兹别克斯坦',
+KZ:'哈萨克斯坦',AU:'澳大利亚',CA:'加拿大'
+};
+const regionMap={
+'California':'加利福尼亚州','Texas':'德克萨斯州','New York':'纽约州','Virginia':'弗吉尼亚州',
+'Florida':'佛罗里达州','Washington':'华盛顿州','Illinois':'伊利诺伊州',
+'Shandong Sheng':'山东省','Beijing':'北京市','Shanghai':'上海市','Guangdong':'广东省',
+'Guangdong Sheng':'广东省','Jiangsu':'江苏省','Zhejiang':'浙江省','Sichuan':'四川省',
+'Fujian':'福建省','Hubei':'湖北省','Henan':'河南省','Hebei':'河北省','Liaoning':'辽宁省'
+};
+const tzMap={
+'Asia/Shanghai':'亚洲/上海','Asia/Urumqi':'亚洲/乌鲁木齐','Asia/Tashkent':'亚洲/塔什干',
+'Asia/Dubai':'亚洲/迪拜','Asia/Tokyo':'亚洲/东京','Asia/Seoul':'亚洲/首尔',
+'Asia/Singapore':'亚洲/新加坡','Asia/Manila':'亚洲/马尼拉','Asia/Bangkok':'亚洲/曼谷',
+'Europe/London':'欧洲/伦敦','Europe/Paris':'欧洲/巴黎','Europe/Berlin':'欧洲/柏林',
+'Europe/Madrid':'欧洲/马德里','Europe/Rome':'欧洲/罗马','America/Los_Angeles':'美国/洛杉矶',
+'America/New_York':'美国/纽约','America/Chicago':'美国/芝加哥','America/Denver':'美国/丹佛',
+'America/Sao_Paulo':'巴西/圣保罗'
+};
+function cnCountry(v,code){return countryMap[code]||v||'未知'}
+function cnRegion(v){return regionMap[v]||v||'未知'}
+function cnTZ(v){return tzMap[v]||v||'未知'}
+function setip(v){document.getElementById('ipInput').value=v;lookup()}
+function focusip(){document.getElementById('ipInput').focus();document.getElementById('ip').scrollIntoView({behavior:'smooth'})}
+function hideTools(){['dnsBox','httpBox','sslBox','batchBox'].forEach(id=>document.getElementById(id)?.classList.remove('show'))}
+function showBatch(){hideTools();document.getElementById('batchBox').classList.add('show');document.getElementById('batch').scrollIntoView({behavior:'smooth'})}
+function showDNS(){hideTools();document.getElementById('dnsBox').classList.add('show');document.getElementById('dns').scrollIntoView({behavior:'smooth'})}
+function showHTTP(){hideTools();document.getElementById('httpBox').classList.add('show');document.getElementById('dns').scrollIntoView({behavior:'smooth'})}
+function showSSL(){hideTools();document.getElementById('sslBox').classList.add('show');document.getElementById('dns').scrollIntoView({behavior:'smooth'})}
+
+async function lookup(ipArg){
+const input=(ipArg||document.getElementById('ipInput').value).trim();
+const box=document.getElementById('result');box.classList.add('show');
+if(!input){box.innerHTML='<div class="note">请输入 IPv4 或 IPv6 地址。</div>';return}
+box.innerHTML='<div class="title">IP 查询结果</div><div class="note">正在查询，请稍候…</div>';
+try{
+const r=await fetch('https://ipwho.is/'+encodeURIComponent(input));const d=await r.json();
+if(d.success===false)throw new Error(d.message||'查询失败');
+box.innerHTML='<div class="title">IP 查询结果</div><div class="grid-result">'
++item('IP 地址',d.ip)+item('类型',d.type)+item('国家',cnCountry(d.country,d.country_code))
++item('地区',cnRegion(d.region))+item('城市',d.city)+item('ISP',d.connection?.isp)
++item('组织',d.connection?.org)+item('ASN',d.connection?.asn)+item('时区',cnTZ(d.timezone?.id))
++'</div><div class="note">IP 归属地仅作为网络信息参考，通常不能精确定位到个人真实地址。</div>';
+}catch(e){box.innerHTML='<div class="title">IP 查询结果</div><div class="note">查询失败：'+esc(e.message||'网络错误，请稍后重试')+'</div>'}
+}
+function item(k,v){return '<div class="item"><small>'+esc(k)+'</small><strong>'+esc(v||'未知')+'</strong></div>'}
+async function myip(){
+const box=document.getElementById('result');box.classList.add('show');box.innerHTML='<div class="title">我的 IP</div><div class="note">正在获取当前公网 IP…</div>';
+try{const r=await fetch('https://ipwho.is/');const d=await r.json();if(!d.success)throw Error('无法获取公网 IP');document.getElementById('ipInput').value=d.ip;lookup(d.ip)}
+catch(e){box.innerHTML='<div class="title">我的 IP</div><div class="note">获取失败，请检查网络连接。</div>'}
+}
+function normalizeIPs(v){return [...new Set(v.split(/[\s,，;；]+/).map(x=>x.trim()).filter(Boolean))].slice(0,50)}
+async function batchLookup(){
+const ips=normalizeIPs(document.getElementById('batchInput').value),box=document.getElementById('batchResult'),count=document.getElementById('batchCount');
+if(!ips.length){box.innerHTML='<div class="note">请至少输入一个 IP。</div>';return}
+count.textContent='正在查询 '+ips.length+' 个 IP…';
+box.innerHTML='<div class="table-wrap"><table class="table"><thead><tr><th>IP</th><th>类型</th><th>国家</th><th>地区</th><th>城市</th><th>ISP</th><th>ASN</th><th>状态</th></tr></thead><tbody id="batchBody"></tbody></table></div>';
+const body=document.getElementById('batchBody');let done=0;
+for(const ip of ips){
+const tr=document.createElement('tr');tr.innerHTML='<td>'+esc(ip)+'</td><td colspan="6">查询中…</td><td>查询中</td>';body.appendChild(tr);
+try{
+const r=await fetch('https://ipwho.is/'+encodeURIComponent(ip));const d=await r.json();if(d.success===false)throw Error();
+tr.innerHTML='<td>'+esc(d.ip)+'</td><td>'+esc(d.type)+'</td><td>'+esc(cnCountry(d.country,d.country_code))+'</td><td>'+esc(cnRegion(d.region))+'</td><td>'+esc(d.city)+'</td><td>'+esc(d.connection?.isp)+'</td><td>'+esc(d.connection?.asn)+'</td><td class="ok">成功</td>';
+}catch(e){tr.innerHTML='<td>'+esc(ip)+'</td><td colspan="6">无法获取结果</td><td class="bad">失败</td>'}
+done++;count.textContent='已完成 '+done+' / '+ips.length
+}
+count.textContent='查询完成：'+ips.length+' 个 IP'
+}
+function clearBatch(){document.getElementById('batchInput').value='';document.getElementById('batchResult').innerHTML='';document.getElementById('batchCount').textContent='最多支持 50 个 IP'}
+
+async function dnsLookup(){
+const domain=document.getElementById('domainInput').value.trim().replace(/^https?:\/\//,'').split('/')[0];
+const box=document.getElementById('dnsResult');if(!domain){box.innerHTML='<div class="note">请输入域名。</div>';return}
+box.innerHTML='<div class="note">正在查询 DNS…</div>';
+try{
+const types=['A','AAAA','MX','CNAME','TXT'];let all=[];
+for(const type of types){
+const r=await fetch('https://dns.google/resolve?name='+encodeURIComponent(domain)+'&type='+type);
+const d=await r.json();(d.Answer||[]).forEach(x=>all.push({type:x.type,name:x.name,data:x.data,ttl:x.TTL}))
+}
+const names={1:'A',5:'CNAME',15:'MX',16:'TXT',28:'AAAA'};
+if(!all.length){box.innerHTML='<div class="note">没有查询到公开 DNS 记录。</div>';return}
+box.innerHTML='<div class="table-wrap"><table class="table"><thead><tr><th>类型</th><th>名称</th><th>记录值</th><th>TTL</th></tr></thead><tbody>'+all.map(x=>'<tr><td>'+esc(names[x.type]||x.type)+'</td><td>'+esc(x.name)+'</td><td>'+esc(x.data)+'</td><td>'+esc(x.ttl)+'</td></tr>').join('')+'</tbody></table></div>'
+}catch(e){box.innerHTML='<div class="note">DNS 查询失败，请检查域名或网络连接。</div>'}
+}
+async function httpLookup(){
+let url=document.getElementById('urlInput').value.trim();if(!url) return;
+if(!/^https?:\/\//i.test(url))url='https://'+url;
+const box=document.getElementById('httpResult');box.innerHTML='<div class="note">正在检测…</div>';
+try{
+const start=performance.now();const r=await fetch(url,{mode:'no-cors',cache:'no-store'});const ms=Math.round(performance.now()-start);
+box.innerHTML='<div class="note"><span class="ok">请求已发出</span> · 响应时间约 '+ms+' ms。由于浏览器跨域安全限制，前端无法可靠读取第三方网站的 HTTP 状态码。</div>'
+}catch(e){box.innerHTML='<div class="note"><span class="bad">检测失败</span>：浏览器无法直接完成跨域检测。正式上线建议增加后端检测接口。</div>'}
+}
+async function sslLookup(){
+const domain=document.getElementById('sslInput').value.trim().replace(/^https?:\/\//,'').split('/')[0];
+const box=document.getElementById('sslResult');if(!domain){box.innerHTML='<div class="note">请输入域名。</div>';return}
+box.innerHTML='<div class="note">正在查询公开证书记录…</div>';
+try{
+const r=await fetch('https://crt.sh/?q='+encodeURIComponent(domain)+'&output=json');const data=await r.json();
+const rows=[...new Map(data.map(x=>[x.id,x])).values()].slice(0,20);
+if(!rows.length){box.innerHTML='<div class="note">没有找到公开证书记录。</div>';return}
+box.innerHTML='<div class="table-wrap"><table class="table"><thead><tr><th>证书编号</th><th>域名</th><th>签发者</th><th>有效期开始</th><th>有效期结束</th></tr></thead><tbody>'+rows.map(x=>'<tr><td>'+esc(x.id)+'</td><td>'+esc(x.name_value)+'</td><td>'+esc(x.issuer_name)+'</td><td>'+esc(x.not_before)+'</td><td>'+esc(x.not_after)+'</td></tr>').join('')+'</tbody></table></div><div class="note">这里显示的是公开证书透明度记录；正式生产环境如需精确判断当前站点证书是否过期，建议增加服务器端 SSL 握手检测。</div>'
+}catch(e){box.innerHTML='<div class="note">SSL 查询失败。部分网络环境可能无法直接访问证书透明度接口。</div>'}
+}
+document.getElementById('ipInput').addEventListener('keydown',e=>{if(e.key==='Enter')lookup()});
+</script>
+</body>
+</html>
